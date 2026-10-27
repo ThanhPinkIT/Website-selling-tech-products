@@ -50,7 +50,7 @@ async function loadProducts() {
         }
         
         // Show up to 8 products on homepage
-        const displayProducts = filtered.slice(0, 8);
+        const displayProducts = filtered;
         
         let html = '';
         displayProducts.forEach(p => {

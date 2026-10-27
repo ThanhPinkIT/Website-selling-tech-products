@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🛒 Website Bán Hàng Công Nghệ (PHP & MySQL)
 
 Website bán hàng trực tuyến được xây dựng bằng ngôn ngữ **PHP thuần**, kết hợp với cơ sở dữ liệu **MySQL** và giao diện **Bootstrap 5**. Dự án hỗ trợ đầy đủ các tính năng của một trang web thương mại điện tử cơ bản, chia làm 2 phân hệ rõ ràng: Khách hàng (Frontend) và Quản trị viên (Backend Admin).
@@ -79,7 +78,3 @@ Mọi đóng góp nhằm cải thiện và phát triển dự án đều đượ
 
 ## 📝 Giấy Phép (License)
 Dự án được phân phối dưới giấy phép **MIT License**. Bạn có quyền tự do sử dụng, chỉnh sửa và phân phối.
-=======
-# Website-selling-tech-products
-Đây là project bán hàng đầu tiên của tôi  
->>>>>>> 0c5a714d513f4d6e737937792bfe6635b8cdf6af

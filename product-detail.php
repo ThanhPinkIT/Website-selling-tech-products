@@ -69,7 +69,23 @@ async function loadProductDetail() {
                     <button onclick="addToCart(${p.id})" class="btn btn-success btn-lg"> 🛒 Thêm vào giỏ hàng </button>
                 </div>
             </div>
+            
+            <div class="col-12 mt-5">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="fw-bold mb-4">
+                            ⭐ Đánh giá sản phẩm
+                        </h4>
+
+                        <div id="reviewList">
+                            Đang tải đánh giá...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         `;
+        await loadReviews(productId);
     } catch (err) {
         container.innerHTML = `<div class="col-12"><div class="alert alert-danger">Lỗi tải chi tiết: ${err.message}</div></div>`;
     }
@@ -85,6 +101,72 @@ async function addToCart(productId) {
         showToast(res.message, 'success');
     } catch (err) {
         showToast(err.message, 'danger');
+    }
+}
+
+function escapeHTML(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+async function loadReviews(productId) {
+    const reviewList = document.getElementById('reviewList');
+    if (!reviewList) return;
+
+    try {
+        const res = await fetchAPI(
+            `/product/reviews.php?id=${productId}`
+        );
+
+        const reviews = res.data || [];
+
+        if (reviews.length === 0) {
+            reviewList.innerHTML =
+                '<p class="text-muted">Chưa có đánh giá.</p>';
+            return;
+        }
+
+        const average = reviews.reduce(
+            (sum, r) => sum + Number(r.rating), 0
+        ) / reviews.length;
+
+        let html = `
+            <p>
+                <strong>Điểm trung bình:</strong>
+                <span class="text-warning">
+                    ${'★'.repeat(Math.round(average))}
+                </span>
+                ${average.toFixed(1)}/5
+                (${reviews.length} đánh giá)
+            </p>
+        `;
+
+        reviews.forEach(r => {
+            const rating = Math.max(
+                0, Math.min(5, Math.round(Number(r.rating)))
+            );
+
+            html += `
+                <div class="border-top py-3">
+                    <strong>${escapeHTML(r.fullname)}</strong>
+                    <div class="text-warning">
+                        ${'★'.repeat(rating)}
+                        ${'☆'.repeat(5 - rating)}
+                    </div>
+                    <p>${escapeHTML(r.comment)}</p>
+                </div>
+            `;
+        });
+
+        reviewList.innerHTML = html;
+
+    } catch (err) {
+        reviewList.innerHTML =
+            '<p class="text-danger">Lỗi tải đánh giá.</p>';
     }
 }
 

@@ -33,11 +33,7 @@ if($result->num_rows==0){
 
 $user=$result->fetch_assoc();
 
-/*
-Nếu website đang lưu password dạng plain text
-*/
-
-if ($password !== $user['password']) {
+if (!password_verify($password, $user['password'])) {
     error("Username or password incorrect", 401);
 }
 
